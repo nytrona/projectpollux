@@ -1,11 +1,18 @@
-.codegen
-obj
-accesslist.txt
-*.csproj
-launchSettings.json
-*.dll
-*.pdb
-.intermediate/net5.0/sandbox.deps.json
+
+# This file describes files and paths that should not be tracked by Git version control
+# https://git-scm.com/docs/gitignore
+
+# Auto-generated code editor files
 .vs/*
 .vscode/*
-*.code-workspace
+*.csproj
+obj/*
+Properties/*
+code/obj/*
+code/Properties/*
+
+# Auto-generated asset related files
+*.generated.*
+*.*_c
+*.los
+*.vpk
