@@ -5,13 +5,13 @@ using System.Linq;
 using System.Collections.Generic;
 
 /// <summary>
-/// A logic entity that compares an input value with up to 16 predefined cases. If the input matches a case, it triggers a corresponding output. If there is no match, it triggers a default output.
+/// Compares an input value with up to 16 predefined cases. If the input matches a case, it triggers a corresponding output. If there is no match, it triggers a default output.
 /// </summary>
 [Library( "logic_case" )]
 [HammerEntity]
 [VisGroup( VisGroup.Logic )]
 [EditorSprite( "editor/logic_case.vmat" )]
-[Title( "Case" ), Category( "Logic" ), Icon( "calculate" )]
+[Title( "Case" ), Category( "Logic" ), Icon( "question_mark" )]
 public partial class LogicCase : Entity
 {
     // Keyvalues as properties

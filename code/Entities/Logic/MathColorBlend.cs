@@ -3,54 +3,53 @@ using Editor;
 using System;
 
 /// <summary>
-/// A logic entity that blends between two colors based on an input value.
+/// Blends between two colors based on an input value and outputs the result.
 /// </summary>
 [Library( "math_colorblend" )]
 [HammerEntity]
 [VisGroup( VisGroup.Logic )]
-[Title( "Color Blend" ), Category( "Logic" ), Icon( "palette" )]
+[EditorSprite( "editor/math_colorblend.vmat" )]
+[Title( "Color Blend" ), Category( "Math" ), Icon( "palette" )]
 public partial class MathColorBlend : Entity
 {
-	/// <summary>
+    /// <summary>
     /// Input values below this value will be ignored.
     /// </summary>
-    [Property, Title( "Minimum Valid Input Value" )]
-    public float InMin { get; set; }
+    [Property( "inmin", Title = "Minimum Valid Input Value" )]
+    public float MinInputValue { get; set; } = 0f;
 
     /// <summary>
     /// Input values above this value will be ignored.
     /// </summary>
-    [Property, Title( "Maximum Valid Input Value" )]
-    public float InMax { get; set; }
+    [Property( "inmax", Title = "Maximum Valid Input Value" )]
+    public float MaxInputValue { get; set; } = 1f;
 
     /// <summary>
-    /// When the input value is equal to 'Minimum Valid Input Value', this is the output RGB color.
+    /// Output RGB color when input is min.
     /// </summary>
-    [Property, Title( "Output RGB color when input is min" )]
-    public Color ColorMin { get; set; }
+    [Property( "colormin", Title = "Output RGB Color When Input Is Min" )]
+    public Color ColorMin { get; set; } = Color.Black;
 
     /// <summary>
-    /// When the input value is equal to 'Maximum Valid Input Value', this is the output RGB color.
+    /// Output RGB color when input is max.
     /// </summary>
-    [Property, Title( "Output RGB color when input is max" )]
-    public Color ColorMax { get; set; }
+    [Property( "colormax", Title = "Output RGB Color When Input Is Max" )]
+    public Color ColorMax { get; set; } = Color.White;
 
-    [Property, Title( "Ignore Out of Range Input Values" )]
-    public bool IgnoreOutOfRange { get; set; }
+    /// <summary>
+    /// If enabled, input values outside the valid range will be ignored. If disabled, they will be clamped to the nearest valid value.
+    /// </summary>
+    [Property( "ignoreoutofrange", Title = "Ignore Out Of Range Input Values" )]
+    public bool IgnoreOutOfRange { get; set; } = true;
 
     // Inputs
     [Input]
     public void InValue(Entity activator, float value)
     {
-        if (IgnoreOutOfRange && (value < InMin || value > InMax))
-        {
-            return;
-        }
-
-        float t = Math.Clamp((value - InMin) / (InMax - InMin), 0, 1);
-        Color blendedColor = Color.Lerp(ColorMin, ColorMax, t);
-
-        OutColor.Fire(activator, blendedColor);
+        if (IgnoreOutOfRange && (value < MinInputValue || value > MaxInputValue)) return;
+        var t = MathX.Clamp((value - MinInputValue) / (MaxInputValue - MinInputValue), 0f, 1f);
+        var color = Color.Lerp(ColorMin, ColorMax, t);
+        OutColor.Fire(activator, color);
     }
 
     // Outputs
